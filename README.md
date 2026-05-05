@@ -20,7 +20,7 @@ A modern, animated full-stack portfolio built with **React (Vite)** on the front
 - **Animated skill progress bars** with glowing dot indicators
 - **Project cards** with hover-lift and color-coded accents
 - **Alternating timeline** with glowing center-line for experience
-- **Contact form** that POSTs to Flask backend (falls back to FormSubmit)
+- **Contact form** that sends messages to email through FormSubmit by default
 - **Scroll-to-top** button with spring animation
 - **Active nav tracking** via react-scroll
 

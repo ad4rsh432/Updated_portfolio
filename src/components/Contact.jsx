@@ -4,6 +4,8 @@ import { useInView } from 'react-intersection-observer';
 import { FiMail, FiLinkedin, FiGithub, FiSend, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import axios from 'axios';
 
+const contactEndpoint = import.meta.env.VITE_CONTACT_ENDPOINT || 'https://formsubmit.co/ajax/adarshskumar432@gmail.com';
+
 const contactCards = [
   {
     icon: <FiMail />,
@@ -43,20 +45,19 @@ export default function Contact() {
     e.preventDefault();
     setStatus('loading');
     try {
-      await axios.post('http://localhost:8000/contact/', form, {
+      await axios.post(contactEndpoint, {
+        ...form,
+        _subject: `Portfolio message from ${form.name}`,
+        _template: 'table',
+        _captcha: 'false',
+      }, {
         headers: { 'Content-Type': 'application/json' },
       });
       setStatus('success');
       setForm({ name: '', email: '', message: '' });
-    } catch {
-      // Fallback: try FormSubmit
-      try {
-        await axios.post('https://formsubmit.co/ajax/adarshskumar432@gmail.com', form);
-        setStatus('success');
-        setForm({ name: '', email: '', message: '' });
-      } catch {
-        setStatus('error');
-      }
+    } catch (error) {
+      console.error('Contact form failed:', error);
+      setStatus('error');
     }
     setTimeout(() => setStatus(null), 5000);
   };
