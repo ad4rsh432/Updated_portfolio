@@ -217,7 +217,7 @@ export default function Contact() {
                 <input
                   type="text" name="name" id="contact-name"
                   value={form.name} onChange={handleChange}
-                  placeholder="John Doe" required
+                  placeholder="" required
                   style={inputStyle('name')}
                   onFocus={() => setFocused('name')}
                   onBlur={() => setFocused('')}
