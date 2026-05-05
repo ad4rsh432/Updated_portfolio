@@ -87,7 +87,9 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function Hero() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    return typeof window !== 'undefined' && window.innerWidth < 900;
+  });
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 900);
@@ -98,8 +100,13 @@ export default function Hero() {
 
   return (
     <section id="home" style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center',
-      position: 'relative', overflow: 'hidden', paddingTop: 80,
+      minHeight: isMobile ? 'auto' : '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      paddingTop: isMobile ? 92 : 80,
+      paddingBottom: isMobile ? 56 : 0,
     }}>
       {/* Background */}
       <div style={{ position: 'absolute', inset: 0, background: 'var(--bg-primary)', zIndex: 0 }}>
@@ -126,13 +133,53 @@ export default function Hero() {
           textAlign: isMobile ? 'center' : 'left',
         }}>
 
+          {isMobile && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                width: 144,
+                height: 144,
+                margin: '0 auto -10px',
+                borderRadius: '50%',
+                padding: 3,
+                background: 'linear-gradient(135deg, #7c3aed, #06b6d4, #f59e0b)',
+                boxShadow: '0 14px 40px rgba(124,58,237,0.24)',
+              }}
+            >
+              <div style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                background: 'var(--bg-primary)',
+                border: '4px solid var(--bg-primary)',
+              }}>
+                <img
+                  src="/adarshpfp.jpg"
+                  alt="Adarsh S Kumar"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center 18%',
+                  }}
+                />
+              </div>
+            </motion.div>
+          )}
+
           {/* ── Left content ── */}
           <div>
             {/* Availability badge */}
             <motion.div {...fadeUp(0.1)} style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.28)',
-              borderRadius: 100, padding: '6px 16px', marginBottom: 22,
+              borderRadius: 100,
+              padding: isMobile ? '6px 12px' : '6px 16px',
+              marginBottom: isMobile ? 18 : 22,
+              maxWidth: isMobile ? '100%' : 'none',
             }}>
               <span style={{
                 width: 8, height: 8, borderRadius: '50%', background: '#22c55e',
@@ -147,9 +194,9 @@ export default function Hero() {
             {/* Headline */}
             <motion.h1 {...fadeUp(0.18)} style={{
               fontFamily: 'Sora, sans-serif',
-              fontSize: 'clamp(2rem, 5vw, 3.7rem)',
+              fontSize: isMobile ? 'clamp(2rem, 12vw, 2.85rem)' : 'clamp(2rem, 5vw, 3.7rem)',
               fontWeight: 800, lineHeight: 1.1,
-              color: 'var(--text-primary)', marginBottom: 18,
+              color: 'var(--text-primary)', marginBottom: isMobile ? 14 : 18,
             }}>
               Building{' '}
               <span style={{
@@ -163,7 +210,7 @@ export default function Hero() {
             <motion.p {...fadeUp(0.25)} style={{
               fontSize: 'clamp(0.92rem, 2vw, 1.05rem)',
               color: 'var(--text-secondary)', lineHeight: 1.75,
-              maxWidth: 520, marginBottom: 18,
+              maxWidth: 520, marginBottom: isMobile ? 14 : 18,
               marginLeft: isMobile ? 'auto' : 0, marginRight: isMobile ? 'auto' : 0,
             }}>
               I'm <strong style={{ color: 'var(--text-primary)' }}>Adarsh</strong>, a full stack developer focused on
@@ -171,7 +218,7 @@ export default function Hero() {
             </motion.p>
 
             {/* Typing */}
-            <motion.p {...fadeUp(0.3)} style={{ marginBottom: 30, fontSize: '1rem', color: 'var(--text-secondary)' }}>
+            <motion.p {...fadeUp(0.3)} style={{ marginBottom: isMobile ? 24 : 30, fontSize: '1rem', color: 'var(--text-secondary)' }}>
               Focused on{' '}
               {isMobile ? (
                 <span style={{
@@ -196,14 +243,15 @@ export default function Hero() {
 
             {/* CTA buttons */}
             <motion.div {...fadeUp(0.36)} style={{
-              display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 36,
+              display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: isMobile ? 28 : 36,
               justifyContent: isMobile ? 'center' : 'flex-start',
             }}>
-              <Link to="projects" smooth duration={600} offset={-80}>
+              <Link to="projects" smooth duration={600} offset={-80} style={{ width: isMobile ? '100%' : 'auto' }}>
                 <motion.button
                   whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    width: isMobile ? '100%' : 'auto',
                     padding: '13px 26px',
                     background: 'linear-gradient(135deg, #7c3aed, #9333ea)',
                     color: 'white', border: 'none', borderRadius: 12,
@@ -222,7 +270,8 @@ export default function Hero() {
                 href="#contact"
                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  width: isMobile ? '100%' : 'auto',
                   padding: '13px 26px',
                   border: '1px solid rgba(124,58,237,0.3)',
                   background: 'rgba(124,58,237,0.05)',
